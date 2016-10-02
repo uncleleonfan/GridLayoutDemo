@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
 
     private int mGridItemMargin;
 
+    private View mDragView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,13 +67,23 @@ public class MainActivity extends AppCompatActivity {
     private View.OnLongClickListener mOnLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
+            mDragView = v;
             v.startDrag(null, new View.DragShadowBuilder(v), null, 0);
+            mDragView.setSelected(true);
             return true;
         }
     };
 
     private View.OnDragListener mOnDragListener = new View.OnDragListener() {
 
+        /**
+         * ACTION_DRAG_STARTED  当开启拖拽事件，阴影已创建，该方法执行一次
+         * ACTION_DRAG_ENDED   当拖拽事件结束时，该方法执行一次
+         * ACTION_DRAG_ENTERED  当手指进入监听拖拽事件的视图范围内（gridlayout），该发现执行一次
+         * ACTION_DRAG_EXITED   当手指离开监听拖拽事件的视图范围时（gridlayout），该发现执行一次
+         * ACTION_DRAG_LOCATION  当手指在监听拖拽事件的视图范围内移动时（gridlayout），该方法会执行多次
+         * ACTION_DROP            当手指在  监听拖拽事件的视图范围内抬起时，执行一次
+         */
         @Override
         public boolean onDrag(View v, DragEvent event) {
             switch (event.getAction()) {
@@ -86,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
                     Log.d(TAG, "onDrag: ACTION_DRAG_ENDED");
+                    mDragView.setSelected(false);
                     break;
             }
             return true;
