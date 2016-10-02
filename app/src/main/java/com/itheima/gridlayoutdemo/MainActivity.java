@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void addItem(int i) {
         TextView textView = createTextView(i);
-        mGridLayout.addView(textView);
+        mGridLayout.addView(textView, 0);
+//        mGridLayout.addView(textView);
     }
 
     @NonNull
@@ -48,10 +49,19 @@ public class MainActivity extends AppCompatActivity {
         textView.setBackgroundResource(R.drawable.item_bg);
         textView.setTextColor(getResources().getColorStateList(R.color.grid_item_color_selector));
         textView.setClickable(true);
+        textView.setOnLongClickListener(mOnLongClickListener);
         return textView;
     }
 
     public void onAddItem(View view) {
         addItem(100);
     }
+
+    private View.OnLongClickListener mOnLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            v.startDrag(null, new View.DragShadowBuilder(v), null, 0);
+            return true;
+        }
+    };
 }

@@ -3,10 +3,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/selected_channel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="已选择频道："/>
+
     <GridLayout
         android:id="@+id/grid_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/selected_channel"
         android:animateLayoutChanges="true"
         android:columnCount="4">
 
