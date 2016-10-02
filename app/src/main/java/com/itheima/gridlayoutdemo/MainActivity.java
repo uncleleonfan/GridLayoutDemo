@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         textView.setLayoutParams(layoutParams);
         textView.setGravity(Gravity.CENTER);
         textView.setBackgroundResource(R.drawable.item_bg);
+        textView.setTextColor(getResources().getColorStateList(R.color.grid_item_color_selector));
+        textView.setClickable(true);
         mGridLayout.addView(textView);
     }
 
