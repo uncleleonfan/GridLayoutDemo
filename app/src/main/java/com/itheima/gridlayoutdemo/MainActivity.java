@@ -15,7 +15,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private GridLayout mGridLayout;
+    private GridLayout mSelectedGridLayout;
+
+    private GridLayout mCandidateGridLayout;
 
     private int mGridItemMargin;
 
@@ -29,44 +31,79 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_calculator);
         setContentView(R.layout.activity_main);
-        mGridLayout = (GridLayout) findViewById(R.id.grid_layout);
-        mGridLayout.setOnDragListener(mOnDragListener);
+        mSelectedGridLayout = (GridLayout) findViewById(R.id.selected_grid_layout);
+        mCandidateGridLayout = (GridLayout) findViewById(R.id.candicate_grid_layout);
+        mSelectedGridLayout.setOnDragListener(mOnDragListener);
         mGridItemMargin = getResources().getDimensionPixelOffset(R.dimen.grid_item_margin);
-        initItems();
+        initSelectedItems();
+        initCandidateItems();
     }
 
-    private void initItems() {
-        for (int i = 0; i < 20; i++) {
-            addItem(i);
+    private void initCandidateItems() {
+        addCandidateItem("时尚");
+        addCandidateItem("财经");
+        addCandidateItem("育儿");
+        addCandidateItem("汽车");
+    }
+
+    private void initSelectedItems() {
+        addSelectedItem("北京");
+        addSelectedItem("中国");
+        addSelectedItem("国际");
+        addSelectedItem("体育");
+        addSelectedItem("生活");
+        addSelectedItem("旅游");
+        addSelectedItem("科技");
+        addSelectedItem("军事");
+    }
+
+    private void addCandidateItem(String text) {
+        TextView textView = createTextView();
+        textView.setText(text);
+        textView.setOnClickListener(onCandidateListener);
+        mCandidateGridLayout.addView(textView);
+    }
+
+    private View.OnClickListener onCandidateListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mCandidateGridLayout.removeView(v);
+            addSelectedItem(((TextView)v).getText().toString());
         }
-    }
+    };
 
-    private void addItem(int i) {
-        TextView textView = createTextView(i);
-        mGridLayout.addView(textView, 0);
-//        mGridLayout.addView(textView);
+    private View.OnClickListener mSelectedListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mSelectedGridLayout.removeView(v);
+            addCandidateItem(((TextView)v).getText().toString());
+        }
+    };
+
+    private void addSelectedItem(String text) {
+        TextView textView = createTextView();
+        textView.setText(text);
+        textView.setOnLongClickListener(mOnLongClickListener);
+        textView.setOnClickListener(mSelectedListener);
+        mSelectedGridLayout.addView(textView);
+//        mSelectedGridLayout.addView(textView);
     }
 
     @NonNull
-    private TextView createTextView(int i) {
+    private TextView createTextView() {
         TextView textView = new TextView(this);
-        textView.setText("item " + i);
         GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
         layoutParams.height = GridLayout.LayoutParams.WRAP_CONTENT;
-        layoutParams.width = getResources().getDisplayMetrics().widthPixels / mGridLayout.getColumnCount() - 2 * mGridItemMargin;
+        layoutParams.width = getResources().getDisplayMetrics().widthPixels / mSelectedGridLayout.getColumnCount() - 2 * mGridItemMargin;
         layoutParams.setMargins(mGridItemMargin, mGridItemMargin, mGridItemMargin, mGridItemMargin);
         textView.setLayoutParams(layoutParams);
         textView.setGravity(Gravity.CENTER);
         textView.setBackgroundResource(R.drawable.item_bg);
         textView.setTextColor(getResources().getColorStateList(R.color.grid_item_color_selector));
         textView.setClickable(true);
-        textView.setOnLongClickListener(mOnLongClickListener);
         return textView;
     }
 
-    public void onAddItem(View view) {
-        addItem(100);
-    }
 
     private View.OnLongClickListener mOnLongClickListener = new View.OnLongClickListener() {
         @Override
@@ -98,10 +135,10 @@ public class MainActivity extends AppCompatActivity {
                 case DragEvent.ACTION_DRAG_LOCATION:
                     Log.d(TAG, "onDrag: ACTION_DRAG_LOCATION");
                     int index = getTouchIndex(event);
-                    View targetView = mGridLayout.getChildAt(index);
+                    View targetView = mSelectedGridLayout.getChildAt(index);
                     if (index > -1 &&  targetView != mDragView) {
-                        mGridLayout.removeView(mDragView);
-                        mGridLayout.addView(mDragView, index);
+                        mSelectedGridLayout.removeView(mDragView);
+                        mSelectedGridLayout.addView(mDragView, index);
                     }
                     break;
                 case DragEvent.ACTION_DROP:
@@ -118,9 +155,9 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void initRects() {
-        mRects = new Rect[mGridLayout.getChildCount()];
-        for (int i = 0; i < mGridLayout.getChildCount(); i++) {
-            View child = mGridLayout.getChildAt(i);
+        mRects = new Rect[mSelectedGridLayout.getChildCount()];
+        for (int i = 0; i < mSelectedGridLayout.getChildCount(); i++) {
+            View child = mSelectedGridLayout.getChildAt(i);
             Rect rect = new Rect(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
             mRects[i] = rect;
         }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/selected_channel"
@@ -11,23 +12,26 @@
         android:text="已选择频道："/>
 
     <GridLayout
-        android:id="@+id/grid_layout"
+        android:id="@+id/selected_grid_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/selected_channel"
         android:animateLayoutChanges="true"
         android:columnCount="4">
-
     </GridLayout>
 
-    <Button
+    <TextView
+        android:id="@+id/candidate_channel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:onClick="onAddItem"
-        android:text="Add an item"
-        android:gravity="center"/>
+        android:layout_margin="8dp"
+        android:text="可选频道："/>
 
+    <GridLayout
+        android:id="@+id/candicate_grid_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:columnCount="4">
+    </GridLayout>
 
-
-</RelativeLayout>
+</LinearLayout>
