@@ -1,8 +1,10 @@
 package com.itheima.gridlayoutdemo;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
@@ -29,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addItem(int i) {
+        TextView textView = createTextView(i);
+        mGridLayout.addView(textView);
+    }
+
+    @NonNull
+    private TextView createTextView(int i) {
         TextView textView = new TextView(this);
         textView.setText("item " + i);
         GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
@@ -40,7 +48,10 @@ public class MainActivity extends AppCompatActivity {
         textView.setBackgroundResource(R.drawable.item_bg);
         textView.setTextColor(getResources().getColorStateList(R.color.grid_item_color_selector));
         textView.setClickable(true);
-        mGridLayout.addView(textView);
+        return textView;
     }
 
+    public void onAddItem(View view) {
+        addItem(100);
+    }
 }
