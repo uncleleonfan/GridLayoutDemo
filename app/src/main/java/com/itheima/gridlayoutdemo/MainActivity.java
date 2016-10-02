@@ -1,5 +1,6 @@
 package com.itheima.gridlayoutdemo;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
     private int mGridItemMargin;
 
     private View mDragView;
+
+    private Rect[] mRects;//gridlayout里面的子条目的所有矩形
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +93,16 @@ public class MainActivity extends AppCompatActivity {
             switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:
                     Log.d(TAG, "onDrag: ACTION_DRAG_STARTED");
+                    initRects();
                     break;
                 case DragEvent.ACTION_DRAG_LOCATION:
                     Log.d(TAG, "onDrag: ACTION_DRAG_LOCATION");
+                    int index = getTouchIndex(event);
+                    View targetView = mGridLayout.getChildAt(index);
+                    if (index > -1 &&  targetView != mDragView) {
+                        mGridLayout.removeView(mDragView);
+                        mGridLayout.addView(mDragView, index);
+                    }
                     break;
                 case DragEvent.ACTION_DROP:
                     Log.d(TAG, "onDrag: ACTION_DROP");
@@ -103,5 +114,25 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         }
+
     };
+
+    private void initRects() {
+        mRects = new Rect[mGridLayout.getChildCount()];
+        for (int i = 0; i < mGridLayout.getChildCount(); i++) {
+            View child = mGridLayout.getChildAt(i);
+            Rect rect = new Rect(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
+            mRects[i] = rect;
+        }
+    }
+
+    //实时判断，当前手指点是否进入了相应的子条目，如果进入了就返回位置
+    private int getTouchIndex(DragEvent event) {
+        for (int i = 0; i < mRects.length; i++) {
+            if (mRects[i].contains((int) event.getX(), (int) event.getY())) {
+                return  i;
+            }
+        }
+        return  -1;
+    }
 }
