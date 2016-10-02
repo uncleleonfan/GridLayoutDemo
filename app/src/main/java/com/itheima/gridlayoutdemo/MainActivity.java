@@ -3,12 +3,16 @@ package com.itheima.gridlayoutdemo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     private GridLayout mGridLayout;
 
@@ -20,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_calculator);
         setContentView(R.layout.activity_main);
         mGridLayout = (GridLayout) findViewById(R.id.grid_layout);
+        mGridLayout.setOnDragListener(mOnDragListener);
         mGridItemMargin = getResources().getDimensionPixelOffset(R.dimen.grid_item_margin);
         initItems();
     }
@@ -61,6 +66,28 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onLongClick(View v) {
             v.startDrag(null, new View.DragShadowBuilder(v), null, 0);
+            return true;
+        }
+    };
+
+    private View.OnDragListener mOnDragListener = new View.OnDragListener() {
+
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            switch (event.getAction()) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    Log.d(TAG, "onDrag: ACTION_DRAG_STARTED");
+                    break;
+                case DragEvent.ACTION_DRAG_LOCATION:
+                    Log.d(TAG, "onDrag: ACTION_DRAG_LOCATION");
+                    break;
+                case DragEvent.ACTION_DROP:
+                    Log.d(TAG, "onDrag: ACTION_DROP");
+                    break;
+                case DragEvent.ACTION_DRAG_ENDED:
+                    Log.d(TAG, "onDrag: ACTION_DRAG_ENDED");
+                    break;
+            }
             return true;
         }
     };
