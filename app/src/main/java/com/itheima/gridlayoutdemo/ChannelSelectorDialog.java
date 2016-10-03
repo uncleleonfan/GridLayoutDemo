@@ -2,6 +2,8 @@ package com.itheima.gridlayoutdemo;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.view.Gravity;
+import android.view.WindowManager;
 
 /**
  * 创建者: Leon
@@ -14,7 +16,7 @@ public class ChannelSelectorDialog extends Dialog{
     private ChannelSelector mChannelSelector;
 
     public ChannelSelectorDialog(Context context) {
-        this(context, -1);
+        this(context, R.style.DialogTheme);
     }
 
     public ChannelSelectorDialog(Context context, int themeResId) {
@@ -24,6 +26,11 @@ public class ChannelSelectorDialog extends Dialog{
 
     private void init() {
         setContentView(R.layout.dialog_channel_selector);
+        WindowManager.LayoutParams attributes = getWindow().getAttributes();
+        attributes.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        attributes.gravity = Gravity.TOP;
+        getWindow().setAttributes(attributes);
+        setCanceledOnTouchOutside(true);
         mChannelSelector = (ChannelSelector) findViewById(R.id.channel_selector);
     }
 

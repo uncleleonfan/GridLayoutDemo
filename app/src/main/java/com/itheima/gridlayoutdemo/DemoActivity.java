@@ -25,6 +25,7 @@ public class DemoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_demo);
         mChannelSelector = (ChannelSelector) findViewById(R.id.channel_selector);
         mChannelSelector.setChannels(mSelected, mCandidates);
+        mChannelSelector.setVisibility(View.GONE);
     }
 
     public void onChooseChannel(View view) {
