@@ -13,6 +13,7 @@ import android.widget.GridLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -52,26 +53,34 @@ public class ChannelSelector extends RelativeLayout {
         mCandidateGridLayout = (GridLayout) findViewById(R.id.candicate_grid_layout);
         mSelectedGridLayout.setOnDragListener(mOnDragListener);
         mGridItemMargin = getResources().getDimensionPixelOffset(R.dimen.grid_item_margin);
-        initSelectedItems();
+//        initSelectedItems();
+//        initCandidateItems();
+    }
+
+    public void setChannels(List<String> selected, List<String> candidates) {
+        mSelected = selected;
+        mCandidates = candidates;
         initCandidateItems();
+        initSelectedItems();
+    }
+
+    public void setChannels(String[] selected, String[] candidates) {
+        mSelected = Arrays.asList(selected);
+        mCandidates = Arrays.asList(candidates);
+        initCandidateItems();
+        initSelectedItems();
     }
 
     private void initCandidateItems() {
-        addCandidateItem("时尚");
-        addCandidateItem("财经");
-        addCandidateItem("育儿");
-        addCandidateItem("汽车");
+        for (String item : mCandidates) {
+            addCandidateItem(item);
+        }
     }
 
     private void initSelectedItems() {
-        addSelectedItem("北京");
-        addSelectedItem("中国");
-        addSelectedItem("国际");
-        addSelectedItem("体育");
-        addSelectedItem("生活");
-        addSelectedItem("旅游");
-        addSelectedItem("科技");
-        addSelectedItem("军事");
+        for (String item : mSelected) {
+            addSelectedItem(item);
+        }
     }
 
     private void addCandidateItem(String text) {
