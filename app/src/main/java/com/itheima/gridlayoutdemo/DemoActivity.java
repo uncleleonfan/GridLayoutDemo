@@ -3,6 +3,7 @@ package com.itheima.gridlayoutdemo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 /**
  * 创建者: Leon
@@ -24,5 +25,11 @@ public class DemoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_demo);
         mChannelSelector = (ChannelSelector) findViewById(R.id.channel_selector);
         mChannelSelector.setChannels(mSelected, mCandidates);
+    }
+
+    public void onChooseChannel(View view) {
+        ChannelSelectorDialog channelSelectorDialog = new ChannelSelectorDialog(this);
+        channelSelectorDialog.setChannels(mSelected, mCandidates);
+        channelSelectorDialog.show();
     }
 }
